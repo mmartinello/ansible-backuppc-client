@@ -36,6 +36,9 @@ backuppc_client_system_user: backuppc
 # BackupPC SSH public key
 backuppc_client_ssh_public_key:
 
+# Rsync sender helper script path (will be copied by the role)
+backuppc_client_rsync_sender_script_path: /usr/local/sbin/rsync-backuppc-sender.sh
+
 
 ###############################################################################
 # Rsync Daemon settings (rsyncd transport mode only)

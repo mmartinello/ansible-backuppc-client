@@ -2,6 +2,10 @@
 
 $Conf{XferMethod} = '{{ backuppc_client_xfer_method }}';
 
+{% if backuppc_client_xfer_method == 'rsync' %}
+$Conf{RsyncClientCmd} = '$sshPath -l {{ backuppc_client_system_user }} $host nice -n 19 sudo {{ backuppc_client_rsync_sender_script_path }} $argList+';
+{% endif %}
+
 {% if backuppc_client_xfer_method == 'rsyncd' %}
 $Conf{RsyncdUserName} = '{{ backuppc_client_rsync_auth_user_name }}';
 $Conf{RsyncdPasswd} = '{{ backuppc_client_rsync_auth_user_password }}';

@@ -1,0 +1,19 @@
+---
+- name: Configure client on BackupPC server
+  ansible.builtin.lineinfile:
+    path: /etc/backuppc/hosts
+    regexp: "^{{ inventory_hostname }}"
+    line: "{{ inventory_hostname }}        {{ backuppc_client_dhcp | int }}        {{ backuppc_client_main_user }}        {{ backuppc_client_additional_users | join(',') }}"
+    backup: true
+  delegate_to: "{{ backuppc_client_server_inventory_hostname }}"
+  notify: Reload BackupPC on server
+
+- name: Configure client configuration file on BackupPC server
+  ansible.builtin.template:
+    src: client.pl.j2
+    dest: "/etc/backuppc/{{ inventory_hostname }}.pl"
+    owner: root
+    group: root
+    mode: '0600'
+  delegate_to: "{{ backuppc_client_server_inventory_hostname }}"
+  notify: Reload BackupPC on server

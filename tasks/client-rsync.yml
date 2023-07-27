@@ -1,0 +1,54 @@
+---
+- name: Create system user on client
+  ansible.builtin.user:
+    name: "{{ backuppc_client_system_user }}"
+    comment: BackupPC user (used from the server to connect here to get data)
+    password: '!'
+    state: present
+    shell: /bin/bash
+    group: users
+
+- name: Add the BackupPC SSH public key
+  ansible.posix.authorized_key:
+    user: "{{ backuppc_client_system_user }}"
+    key: "{{ backuppc_client_ssh_public_key }}"
+    state: present
+
+- name: Allow BackupPC user to login through SSH with key only and no password
+  ansible.builtin.blockinfile:
+    path: /etc/ssh/sshd_config
+    create: false
+    block: |
+      Match User {{ backuppc_client_system_user }}
+          PasswordAuthentication no
+  notify: Reload SSHD
+
+- name: Scan the client for SSH keys
+  ansible.builtin.command:
+    cmd: "ssh-keyscan {{ ansible_host }} 2>&1|grep -v '^#'"
+  changed_when: false
+  register: _ssh_keyscan
+
+- name: Register client SSH keys into BackupPC server known_hosts file
+  ansible.builtin.blockinfile:
+    dest: ~/.ssh/known_hosts
+    marker: "# {mark} This part managed by Ansible"
+    block: "{{ _ssh_keyscan.stdout }}"
+  delegate_to: "{{ backuppc_client_server_inventory_hostname }}"
+  become_user: backuppc
+
+- name: Install the Rsync sender helper script path
+  ansible.builtin.copy:
+    src: rsync-backuppc-sender.sh
+    dest: "{{ backuppc_client_rsync_sender_script_path }}"
+    owner: root
+    group: root
+    mode: '0700'
+
+- name: Configure sudo
+  community.general.sudoers:
+    name: backuppc
+    user: "{{ backuppc_client_system_user }}"
+    commands: "{{ backuppc_client_rsync_sender_script_path }}"
+    nopassword: true
+    state: present

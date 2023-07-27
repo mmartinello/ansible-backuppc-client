@@ -1,0 +1,14 @@
+---
+- name: Install Rsync
+  when: backuppc_client_xfer_method in ['rsync', 'rsyncd']
+  block:
+    - name: Install Rsync package
+      ansible.builtin.package:
+        name: rsync
+        state: present
+
+    - name: Ensure Rsync is started and enabled on boot.
+      ansible.builtin.service:
+        name: rsync
+        state: started
+        enabled: "{{ backuppc_client_rsync_enable_on_boot }}"

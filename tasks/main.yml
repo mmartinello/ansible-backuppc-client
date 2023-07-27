@@ -1,4 +1,7 @@
 ---
+- name: Install requirements
+  ansible.builtin.import_tasks: install.yml
+
 - name: Configure the client
   ansible.builtin.import_tasks: client.yml
 
