@@ -1,0 +1,9 @@
+---
+- name: Install stuffs
+  ansible.builtin.import_tasks: install.yml
+
+- name: Configure the client
+  ansible.builtin.import_tasks: configure-client.yml
+
+- name: Configure the BackupPC server
+  ansible.builtin.import_tasks: configure-server.yml

@@ -1,0 +1,17 @@
+# {{ ansible_managed }}
+
+$Conf{XferMethod} = '{{ backuppc_client_xfer_method }}';
+$Conf{RsyncdUserName} = '{{ backuppc_client_rsync_auth_user_name }}';
+$Conf{RsyncdPasswd} = '{{ backuppc_client_rsync_auth_user_password }}';
+
+$Conf{RsyncShareName} = [
+{% for share in backuppc_client_rsync_share_names %}
+  '{{ share }}',
+{% endfor %}
+];
+
+$Conf{BackupFilesExclude} = [
+{% for file in backuppc_client_backup_files_exclude %}
+  '{{ file }}',
+{% endfor %}
+];

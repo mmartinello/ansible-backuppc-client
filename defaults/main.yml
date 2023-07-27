@@ -1,0 +1,42 @@
+---
+# Client Xfer Method: rsync|rsyncd
+backuppc_client_xfer_method: rsyncd
+
+# Client Xfer Method: rsyncd
+backuppc_client_dhcp: false
+
+# Rsync hosts allow
+backuppc_client_rsync_hosts_allow:
+  - 127.0.0.0/24
+
+# Rsync auth user name
+backuppc_client_rsync_auth_user_name: backuppc
+
+# Rsync auth user password (set it to a hard password!!)
+backuppc_client_rsync_auth_user_password: password
+
+# Rsync share names
+backuppc_client_rsync_share_names:
+  - root
+
+# Rsync shares
+backuppc_client_rsyncd_shares:
+  root:
+    path: /
+
+# BackuPC server inventory hostname
+backuppc_server_inventory_hostname:
+
+# Enable Rsync start on boot
+backuppc_client_rsync_enable_on_boot: true
+
+# BackupPC main user for the client
+backuppc_client_user: admin
+
+# Backup Files Exclude
+backuppc_client_backup_files_exclude:
+  - /proc
+  - /dev
+  - /sys
+  - /run
+  - /mnt

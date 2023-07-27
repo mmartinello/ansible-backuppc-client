@@ -1,0 +1,1 @@
+- Move Rsync configuration to a separate role

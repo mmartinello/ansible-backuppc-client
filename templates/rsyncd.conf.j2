@@ -1,0 +1,31 @@
+# {{ ansible_managed }}
+
+# GLOBAL OPTIONS
+
+#motd file=/etc/motd
+# for pid file, dont' use /var/run/rsync.pid unless you're not going to run
+# rsync out of the init.d script. The /var/run/rsyncd.pid below is OK.
+#pid file=/var/run/rsyncd.pid
+log file=/var/log/rsyncd.log
+#transfer logging = yes
+
+secrets file = /etc/rsyncd.secrets
+strict modes = yes
+
+hosts allow = {% for host in backuppc_client_rsync_hosts_allow %}{{ host }}{{ " " if not loop.last else "" }}{% endfor %}
+
+#hosts deny =
+
+# MODULE OPTIONS
+#use chroot = yes
+charset = utf8
+
+{% for share_name, share_config in backuppc_client_rsyncd_shares.items() %}
+[{{ share_name }}]
+	path = {{ share_config.path }}
+	uid = {{ share_config.uid | default("root") }}
+	gid = {{ share_config.gid | default("root") }}
+	auth users = {{ backuppc_client_rsync_auth_user_name }}
+	read only = {{ share_config.read_only | default("yes") }}
+
+{% endfor %}

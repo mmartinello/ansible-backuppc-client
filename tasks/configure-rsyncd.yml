@@ -1,0 +1,30 @@
+---
+- name: Install Rsync
+  ansible.builtin.package:
+    name: rsync
+    state: present
+
+- name: Configure Rsync
+  ansible.builtin.template:
+    src: rsyncd.conf.j2
+    dest: /etc/rsyncd.conf
+    owner: root
+    group: root
+    mode: '0600'
+  notify: Restart Rsync
+
+- name: Configure Rsync Secrets file
+  ansible.builtin.template:
+    src: rsyncd.secrets.j2
+    dest: /etc/rsyncd.secrets
+    owner: root
+    group: root
+    mode: '0600'
+  notify: Restart Rsync
+
+- name: Ensure Rsync is started and enabled on boot.
+  ansible.builtin.service:
+    name: rsync
+    state: started
+    enabled: "{{ backuppc_client_rsync_enable_on_boot }}"
+  when: ansible_system == "Linux"

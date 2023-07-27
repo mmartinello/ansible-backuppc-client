@@ -1,0 +1,4 @@
+---
+- name: Configure the client to use the rsyncd transport method
+  ansible.builtin.import_tasks: configure-rsyncd.yml
+  when: backuppc_client_xfer_method == "rsyncd"
