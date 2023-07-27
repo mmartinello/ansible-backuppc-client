@@ -1,18 +1,23 @@
 ---
 - name: Restart Rsync
-  service:
+  ansible.builtin.service:
     name: rsync
     state: restarted
 
 - name: Restart Rsync
-  service:
+  ansible.builtin.service:
     name: rsync
     state: restarted
 
 - name: Reload BackupPC on server
-  service:
+  ansible.builtin.service:
     name: backuppc
     state: reloaded
-  delegate_to: "{{ backuppc_server_inventory_hostname }}"
+  delegate_to: "{{ backuppc_client_server_inventory_hostname }}"
   become: true
   run_once: true
+
+- name: Reload SSHD
+  ansible.builtin.service:
+    name: sshd
+    state: reloaded

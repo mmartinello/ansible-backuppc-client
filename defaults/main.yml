@@ -1,9 +1,44 @@
 ---
-# Client Xfer Method: rsync|rsyncd
-backuppc_client_xfer_method: rsyncd
+###############################################################################
+# BackupPC client settings
 
-# Client Xfer Method: rsyncd
+# Client Xfer Method: rsync|rsyncd
+backuppc_client_xfer_method: rsync
+
+# DHCP mode enabled (true|false)
 backuppc_client_dhcp: false
+
+# BackupPC main user which can access to client on web interface
+backuppc_client_main_user: admin
+
+# BackupPC additional users which can access to client on web interface (list)
+backuppc_client_additional_users: []
+
+# Rsync share names (list)
+backuppc_client_rsync_share_names:
+  - /
+
+# Backup Files Exclude (list)
+backuppc_client_backup_files_exclude:
+  - /proc
+  - /dev
+  - /sys
+  - /run
+  - /mnt
+
+
+###############################################################################
+# SSH connection settings (rsync mode only)
+
+# BackupPC system user on client
+backuppc_client_system_user: backuppc
+
+# BackupPC SSH public key
+backuppc_client_ssh_public_key:
+
+
+###############################################################################
+# Rsync Daemon settings (rsyncd transport mode only)
 
 # Rsync hosts allow
 backuppc_client_rsync_hosts_allow:
@@ -15,28 +50,17 @@ backuppc_client_rsync_auth_user_name: backuppc
 # Rsync auth user password (set it to a hard password!!)
 backuppc_client_rsync_auth_user_password: password
 
-# Rsync share names
-backuppc_client_rsync_share_names:
-  - root
-
-# Rsync shares
+# Rsync server shares
 backuppc_client_rsyncd_shares:
   root:
     path: /
 
-# BackuPC server inventory hostname
-backuppc_server_inventory_hostname:
-
 # Enable Rsync start on boot
 backuppc_client_rsync_enable_on_boot: true
 
-# BackupPC main user for the client
-backuppc_client_user: admin
 
-# Backup Files Exclude
-backuppc_client_backup_files_exclude:
-  - /proc
-  - /dev
-  - /sys
-  - /run
-  - /mnt
+###############################################################################
+# BackupPC server settings
+
+# BackuPC server inventory hostname
+backuppc_client_server_inventory_hostname: backuppc.domain.local

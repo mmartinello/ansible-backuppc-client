@@ -1,6 +1,6 @@
 ---
 - name: Configure the client
-  ansible.builtin.import_tasks: configure-client.yml
+  ansible.builtin.import_tasks: client.yml
 
 - name: Configure the BackupPC server
-  ansible.builtin.import_tasks: configure-server.yml
+  ansible.builtin.import_tasks: server.yml
