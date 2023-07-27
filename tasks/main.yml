@@ -1,7 +1,4 @@
 ---
-- name: Install stuffs
-  ansible.builtin.import_tasks: install.yml
-
 - name: Configure the client
   ansible.builtin.import_tasks: configure-client.yml
 
